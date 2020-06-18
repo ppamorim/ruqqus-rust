@@ -1,0 +1,19 @@
+[workspace]
+members = [
+    "ruqqus-core",
+    "ruqqus-http",
+]
+
+[profile.dev]
+opt-level = 0
+debug = true
+debug-assertions = true
+overflow-checks = true
+lto = false
+panic = 'unwind'
+incremental = true
+rpath = false
+sanitizer = "leak"
+
+[profile.release]
+debug = true
