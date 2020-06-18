@@ -13,7 +13,7 @@ pub struct Opt {
     pub postgres_user: String,
 
     /// The address on which the http server will listen.
-    #[structopt(long, env = "RUQQUS_HTTP_ADDR", default_value = "127.0.0.1:7701")]
+    #[structopt(long, env = "RUQQUS_HTTP_ADDR", default_value = "127.0.0.1:7700")]
     pub http_addr: String,
 
     /// The master key allowing you to do everything on the server.
