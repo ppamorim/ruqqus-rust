@@ -31,6 +31,21 @@ impl PostgresDecoder for Post {
 
 }
 
+#[derive(Clone)]
+pub struct User {
+    pub id: i32
+}
+
+impl PostgresDecoder for User {
+
+    fn decode(row: postgres::Row) -> Self {
+        let id: i32 = row.get(0);
+        User {
+            id
+        }
+    }
+
+}
 
 type Connection = r2d2::PooledConnection<PostgresConnectionManager<NoTls>>;
 type ConnectionParams<'a,'b> = &'a[&'b(dyn ToSql + Sync)];

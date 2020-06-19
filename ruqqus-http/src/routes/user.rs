@@ -4,35 +4,35 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 use crate::error::ResponseError;
-use crate::routes::PostParam;
+use crate::routes::UserParam;
 use crate::Data;
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PostResponse {
+pub struct UserResponse {
     id: i32
 }
 
-impl PostResponse {
-    fn from(post: ruqqus_core::Post) -> PostResponse {
-        PostResponse {
-            id: post.id
+impl UserResponse {
+    fn from(user: ruqqus_core::User) -> UserResponse {
+        UserResponse {
+            id: user.id
         }
     }
 }
 
-#[get("/api/v1/post/{pid}")]
-pub async fn post_info(
+#[get("/api/v1/user/{username}")]
+pub async fn user_info(
     data: web::Data<Data>, 
     req: web::HttpRequest,
-    path: web::Path<PostParam>,
+    path: web::Path<UserParam>,
 ) -> aweb::Result<HttpResponse> {
 
-    let post = web::block({
-        move || data.db.get_post(path.pid)
+    let user = web::block({
+        move || data.db.get_user(&path.user_name)
     })
     .await
     .map_err(|err| ResponseError::Internal(err.to_string()))?;
 
-    Ok(HttpResponse::Ok().json(PostResponse::from(post)))
+    Ok(HttpResponse::Ok().json(UserResponse::from(user)))
 }
