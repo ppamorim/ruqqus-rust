@@ -31,14 +31,26 @@ impl PostgresDecoder for Guild {
 
 #[derive(Clone)]
 pub struct User {
-    pub id: i32
+    pub id: i32,
+    pub username: String,
+    pub email: String,
+    pub passhash: String,
+    pub created_utc: i32,
 }
 
 impl PostgresDecoder for User {
     fn decode(row: postgres::Row) -> Self {
         let id: i32 = row.get(0);
+        let username: String = row.get(1);
+        let email: String = row.get(2);
+        let passhash: String = row.get(3);
+        let created_utc: i32 = row.get(4);
         User {
-            id
+            id,
+            username,
+            email,
+            passhash,
+            created_utc,
         }
     }
 }
@@ -60,14 +72,49 @@ impl PostgresDecoder for Post {
 
 #[derive(Clone)]
 pub struct Comment {
-    pub cid: i32
+    pub id: i32,
+    pub author_id: i32,
+    pub body: String,
+    pub parent_submission: i32, //Column(Integer, ForeignKey("submissions.id"))
+    pub parent_fullname: i32,
+    pub created_utc: i32,
+    pub edited_utc: i32,
+    pub is_banned: bool,
+    // pub body_html = Column(String(20000))
+    // pub distinguish_level=Column(Integer, default=0)
+    // pub is_deleted = Column(Boolean, default=False)
+    // pub is_approved = Column(Integer, default=0)
+    // pub approved_utc=Column(Integer, default=0)
+    // pub ban_reason=Column(String(256), default='')
+    // pub creation_ip=Column(String(64), default='')
+    // pub score_disputed=Column(Float, default=0)
+    // pub score_hot=Column(Float, default=0)
+    // pub score_top=Column(Integer, default=1)
+    // pub level=Column(Integer, default=0)
+    // pub parent_comment_id=Column(Integer, ForeignKey("comments.id"))
+    // pub author_name=Column(String(64), default="")
+    // pub id: i32,
 }
 
 impl PostgresDecoder for Comment {
     fn decode(row: postgres::Row) -> Self {
-        let cid: i32 = row.get(0);
+        let id: i32 = row.get(0);
+        let author_id: i32 = row.get(1);
+        let body: String = row.get(2);
+        let parent_submission: i32 = row.get(3);
+        let parent_fullname: i32 = row.get(4);
+        let created_utc: i32 = row.get(5);
+        let edited_utc: i32 = row.get(6);
+        let is_banned: bool = row.get(7);
         Comment {
-            cid
+            id,
+            author_id,
+            body,
+            parent_submission,
+            parent_fullname,
+            created_utc,
+            edited_utc,
+            is_banned,
         }
     }
 }

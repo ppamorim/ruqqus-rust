@@ -16,7 +16,7 @@ pub struct CommentResponse {
 impl CommentResponse {
     fn from(comment: ruqqus_core::Comment) -> CommentResponse {
         CommentResponse {
-            cid: comment.cid
+            cid: comment.id
         }
     }
 }

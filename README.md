@@ -1,5 +1,9 @@
 # ruqqus-rust
 
+## Intro
+
+Ruqqus-rust is a reimplementation of the original python Ruqqus server, this project is totally written in Rust and RESTful.
+
 ## Compile
 
 To compile it directly, run `cargo build`, to run `cargo run`.

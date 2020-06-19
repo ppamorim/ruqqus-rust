@@ -21,7 +21,7 @@ impl UserResponse {
     }
 }
 
-#[get("/api/v1/user/{username}")]
+#[get("/api/v1/user/{user_name}")]
 pub async fn user_info(
     data: web::Data<Data>, 
     req: web::HttpRequest,

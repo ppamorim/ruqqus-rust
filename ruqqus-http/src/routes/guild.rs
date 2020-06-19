@@ -21,7 +21,7 @@ impl GuildResponse {
     }
 }
 
-#[get("/api/v1/guild/{username}")]
+#[get("/api/v1/guild/{board_name}")]
 pub async fn guild_info(
     data: web::Data<Data>, 
     req: web::HttpRequest,
