@@ -16,19 +16,17 @@ pub trait PostgresDecoder {
 }
 
 #[derive(Clone)]
-pub struct Post {
+pub struct Guild {
     pub id: i32
 }
 
-impl PostgresDecoder for Post {
-
+impl PostgresDecoder for Guild {
     fn decode(row: postgres::Row) -> Self {
         let id: i32 = row.get(0);
-        Post {
+        Guild {
             id
         }
     }
-
 }
 
 #[derive(Clone)]
@@ -37,14 +35,41 @@ pub struct User {
 }
 
 impl PostgresDecoder for User {
-
     fn decode(row: postgres::Row) -> Self {
         let id: i32 = row.get(0);
         User {
             id
         }
     }
+}
 
+#[derive(Clone)]
+pub struct Post {
+    pub id: i32
+}
+
+impl PostgresDecoder for Post {
+    fn decode(row: postgres::Row) -> Self {
+        let id: i32 = row.get(0);
+        Post {
+            id
+        }
+    }
+}
+
+
+#[derive(Clone)]
+pub struct Comment {
+    pub cid: i32
+}
+
+impl PostgresDecoder for Comment {
+    fn decode(row: postgres::Row) -> Self {
+        let cid: i32 = row.get(0);
+        Comment {
+            cid
+        }
+    }
 }
 
 type Connection = r2d2::PooledConnection<PostgresConnectionManager<NoTls>>;
