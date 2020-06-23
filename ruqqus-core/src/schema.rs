@@ -1,4 +1,4 @@
-table! {
+diesel::table! {
     alts (id) {
         id -> Int4,
         user1 -> Int4,

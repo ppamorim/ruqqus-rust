@@ -14,7 +14,7 @@ pub struct UserResponse {
 }
 
 impl UserResponse {
-    fn from(user: ruqqus_core::User) -> UserResponse {
+    fn from(user: ruqqus_core::models::User) -> UserResponse {
         UserResponse {
             id: user.id
         }
