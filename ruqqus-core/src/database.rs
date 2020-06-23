@@ -6,7 +6,7 @@ use r2d2_postgres::PostgresConnectionManager;
 use uuid::Uuid;
 
 use crate::{store, MResult, Error};
-use crate::{Guild, User, Post, Comment};
+use crate::{Guild, Post, Comment};
 
 use diesel::prelude::*;
 use diesel::pg::PgConnection;
@@ -46,6 +46,7 @@ impl Database {
         // print!("get_guild, board_name: {}", board_name);
         // let sql = "SELECT * FROM guild WHERE board_name = $1;";
         // store::get(&mut conn, sql, &[&board_name])
+        Err(Error::MissingPrimaryKey)
     }
 
     pub fn get_user(&self, user_name: &str) -> MResult<User> {
@@ -53,6 +54,7 @@ impl Database {
         // print!("get_user, user_name: {}", user_name);
         // let sql = "SELECT * FROM user WHERE username = $1;";
         // store::get(&mut conn, sql, &[&user_name])
+        Err(Error::MissingPrimaryKey)
     }
 
     pub fn get_post(&self, pid: i32) -> MResult<Post> {
@@ -61,6 +63,7 @@ impl Database {
         // print!("get_post, pid: {}", pid);
         // let sql = "SELECT * FROM post WHERE pid = $1;";
         // store::get(&mut conn, sql, &[&pid])
+        Err(Error::MissingPrimaryKey)
     }
 
     pub fn get_comment(&self, cid: i32) -> MResult<Comment> {
@@ -68,6 +71,7 @@ impl Database {
         // print!("get_post, cid: {}", cid);
         // let sql = "SELECT * FROM comment WHERE cid = $1;";
         // store::get(&mut conn, sql, &[&cid])
+        Err(Error::MissingPrimaryKey)
     }
 
 }
