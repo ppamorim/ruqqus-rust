@@ -26,9 +26,9 @@ impl Database {
 
     pub fn open_or_create(postgres_host: &str, postgres_user: &str) -> MResult<Database> {
 
-        let mut postgres_config = postgres::Config::default();
-        postgres_config.host(postgres_host);
-        postgres_config.user(postgres_user);
+        // let mut postgres_config = postgres::Config::default();
+        // postgres_config.host(postgres_host);
+        // postgres_config.user(postgres_user);
 
         // let manager = PostgresConnectionManager::new(postgres_config,  NoTls);
         // let pool = r2d2::Pool::new(manager).unwrap();
