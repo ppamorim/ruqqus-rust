@@ -16,6 +16,7 @@ pub trait PostgresDecoder {
 }
 
 #[derive(Clone)]
+#[derive(Queryable)]
 pub struct Guild {
     pub id: i32
 }
@@ -30,6 +31,7 @@ impl PostgresDecoder for Guild {
 }
 
 #[derive(Clone)]
+#[derive(Queryable)]
 pub struct User {
     pub id: i32,
     pub username: String,

@@ -811,6 +811,7 @@ dependencies = [
  "byteorder",
  "diesel_derives",
  "pq-sys",
+ "r2d2",
 ]
 
 [[package]]
