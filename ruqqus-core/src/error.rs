@@ -6,6 +6,7 @@ pub type MResult<T> = Result<T, Error>;
 pub enum Error {
     Io(io::Error),
     Postgres(postgres::Error),
+    NotFound,
     MissingReturnInsertId,
     IndexAlreadyExists,
     MissingPrimaryKey,
@@ -42,6 +43,7 @@ impl fmt::Display for Error {
         match self {
             Io(e) => write!(f, "{}", e),
             Postgres(e) => write!(f, "{}", e),
+            NotFound => write!(f, "Not found"),
             MissingReturnInsertId  => write!(f, "The data has been inserted but no ID returned"),
             IndexAlreadyExists => write!(f, "index already exists"),
             MissingPrimaryKey => write!(f, "schema cannot be built without a primary key"),

@@ -14,7 +14,7 @@ pub struct GuildResponse {
 }
 
 impl GuildResponse {
-    fn from(user: ruqqus_core::Guild) -> GuildResponse {
+    fn from(user: ruqqus_core::models::Board) -> GuildResponse {
         GuildResponse {
             id: user.id
         }
@@ -29,7 +29,7 @@ pub async fn guild_info(
 ) -> aweb::Result<HttpResponse> {
 
     let guild = web::block({
-        move || data.db.get_guild(&path.board_name)
+        move || data.db.get_board(&path.board_name)
     })
     .await
     .map_err(|err| ResponseError::Internal(err.to_string()))?;

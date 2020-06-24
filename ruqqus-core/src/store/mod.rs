@@ -16,35 +16,6 @@ pub trait PostgresDecoder {
 }
 
 #[derive(Clone)]
-pub struct Guild {
-    pub id: i32
-}
-
-impl PostgresDecoder for Guild {
-    fn decode(row: postgres::Row) -> Self {
-        let id: i32 = row.get(0);
-        Guild {
-            id
-        }
-    }
-}
-
-#[derive(Clone)]
-pub struct Post {
-    pub id: i32
-}
-
-impl PostgresDecoder for Post {
-    fn decode(row: postgres::Row) -> Self {
-        let id: i32 = row.get(0);
-        Post {
-            id
-        }
-    }
-}
-
-
-#[derive(Clone)]
 pub struct Comment {
     pub id: i32,
     pub author_id: i32,

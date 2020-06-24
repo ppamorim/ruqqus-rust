@@ -10,5 +10,4 @@ pub mod store;
 
 pub use self::database::Database;
 pub use self::error::{Error, MResult};
-pub use self::store::{Guild, Post, Comment};
-use self::models::User;
+pub use self::store::{Comment};
