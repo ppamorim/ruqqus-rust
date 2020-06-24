@@ -3,24 +3,23 @@ use log::info;
 use std::char;
 
 use postgres::{NoTls};
-use r2d2_postgres::PostgresConnectionManager;
 use uuid::Uuid;
 
-use crate::{store, RResult, Error};
+use crate::{RResult, Error};
 use crate::models::{User, Vote, Submission, Board, Comment};
 
 use diesel::prelude::*;
 use diesel::pg::PgConnection;
 use dotenv::dotenv;
 use std::env;
-use diesel::r2d2::{ Pool, PooledConnection, ConnectionManager, PoolError };
+use diesel::r2d2::{ Pool, ConnectionManager, PoolError };
 
 pub struct Database {
     pool: r2d2::Pool<diesel::r2d2::ConnectionManager<PgConnection>>,
 }
 
 pub type PgPool = Pool<ConnectionManager<PgConnection>>;
-pub type PgPooledConnection = PooledConnection<ConnectionManager<PgConnection>>;
+// pub type PgPooledConnection = PooledConnection<ConnectionManager<PgConnection>>;
 
 fn init_pool(database_url: &str) -> Result<PgPool, PoolError> {
     let manager = ConnectionManager::<PgConnection>::new(database_url);
@@ -221,11 +220,8 @@ impl Database {
 
     pub fn get_comments(&self, cid: i32, sort_type: SortType) -> RResult<Comment> {
 
-        match sort_type {
-            SortType::Activity => {
-                return Err(Error::NotFound);
-            },
-            _ => {},
+        if let SortType::Activity = sort_type {
+            return Err(Error::NotFound);
         }
 
         use crate::schema::comments::dsl;
@@ -265,7 +261,7 @@ fn format_radix(mut x: u32, radix: u32) -> String {
 
     loop {
         let m = x % radix;
-        x = x / radix;
+        x /= radix;
 
         // will panic if you use a bad radix (< 2 or > 36).
         result.push(std::char::from_digit(m, radix).unwrap());
