@@ -5,6 +5,7 @@ RUN     apk update --quiet
 RUN     apk add curl
 RUN     apk add build-base
 RUN     apk add musl-dev
+RUN     apk add postgresql-dev
 
 RUN     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
@@ -14,6 +15,7 @@ COPY    . .
 
 ENV     RUSTFLAGS="-C target-feature=-crt-static"
 
+# RUN     $HOME/.cargo/bin/cargo install diesel_cli --no-default-features --features postgres
 RUN     $HOME/.cargo/bin/cargo build
 
 # Run
