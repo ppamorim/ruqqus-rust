@@ -12,7 +12,7 @@ To compile it directly, run `cargo build`, to run `cargo run`.
 
 Please mind that compiling the project using Dockerfile is slow since it's in release mode.
 
-TO build the server:
+To build the server:
 
 ```
 docker build -t ruqqus .
