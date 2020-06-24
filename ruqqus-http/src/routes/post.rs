@@ -29,7 +29,7 @@ pub async fn post_info(
 ) -> aweb::Result<HttpResponse> {
 
     let post = web::block({
-        move || data.db.get_submissions(path.pid)
+        move || data.db.get_post(path.pid)
     })
     .await
     .map_err(|err| ResponseError::Internal(err.to_string()))?;

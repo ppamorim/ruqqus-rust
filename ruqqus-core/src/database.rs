@@ -6,7 +6,7 @@ use postgres::{NoTls};
 use r2d2_postgres::PostgresConnectionManager;
 use uuid::Uuid;
 
-use crate::{store, MResult, Error};
+use crate::{store, RResult, Error};
 use crate::models::{User, Vote, Submission, Board, Comment};
 
 use diesel::prelude::*;
@@ -35,9 +35,10 @@ fn establish_connection() -> PgPool {
     init_pool(&database_url).expect("Failed to create pool")
 }
 
+//SOURCE: https://github.com/ruqqus/ruqqus/blob/master/ruqqus/helpers/get.py
 impl Database {
 
-    pub fn open_or_create(postgres_host: &str, postgres_user: &str) -> MResult<Database> {
+    pub fn open_or_create(postgres_host: &str, postgres_user: &str) -> RResult<Database> {
 
         // let mut postgres_config = postgres::Config::default();
         // postgres_config.host(postgres_host);
@@ -53,7 +54,7 @@ impl Database {
 
     }
 
-    pub fn get_user(&self, user_name: &str) -> MResult<User> {
+    pub fn get_user(&self, user_name: &str) -> RResult<User> {
         use crate::schema::users::dsl;
 
         let user_name = user_name.replace("\\", "");
@@ -62,7 +63,7 @@ impl Database {
         let conn = self.pool.get().unwrap();
 
         let users: Vec<User> = dsl::users
-            .filter(dsl::username.eq(user_name))
+            .filter(dsl::username.like(user_name))
             .limit(1)
             .load::<User>(&conn)
             .expect("Error loading submission");
@@ -73,7 +74,7 @@ impl Database {
         }
     }
 
-    pub fn get_submission(&self, pid: i32) -> MResult<Submission> {
+    pub fn get_post(&self, pid: i32) -> RResult<Submission> {
 
         use crate::schema::submissions::dsl as submissions_dsl;
         use crate::schema::votes::dsl as votes_dsl;
@@ -122,7 +123,7 @@ impl Database {
         // return x
     }
 
-    pub fn get_board(&self, bid: i32) -> MResult<Board> {
+    pub fn get_board(&self, bid: i32) -> RResult<Board> {
 
         use crate::schema::boards::dsl;
 
@@ -141,7 +142,7 @@ impl Database {
         }
     }
 
-    pub fn get_guild(&self, name: &str) -> MResult<Board> {
+    pub fn get_guild(&self, name: &str) -> RResult<Board> {
 
         use crate::schema::boards::dsl;
 
@@ -163,7 +164,7 @@ impl Database {
         }
     }
 
-    pub fn get_comment(&self, cid: i32) -> MResult<Comment> {
+    pub fn get_comment(&self, cid: i32) -> RResult<Comment> {
 
         use crate::schema::comments::dsl;
 
@@ -182,7 +183,7 @@ impl Database {
         }
     }
 
-    pub fn get_comments(&self, cid: i32, sort_type: SortType) -> MResult<Comment> {
+    pub fn get_comments(&self, cid: i32, sort_type: SortType) -> RResult<Comment> {
 
         match sort_type {
             SortType::Activity => {
@@ -198,7 +199,6 @@ impl Database {
 
         let comments: Vec<Comment> = dsl::comments
             .filter(dsl::id.eq(cid))
-            .limit(1)
             .load::<Comment>(&conn)
             .expect("Error loading comment");
 
@@ -208,7 +208,7 @@ impl Database {
         }
     }
 
-    pub fn get_votes(&self, user_id: i32) -> MResult<Vec<Vote>> {
+    pub fn get_votes(&self, user_id: i32) -> RResult<Vec<Vote>> {
         use crate::schema::votes::dsl;
         let conn = self.pool.get().unwrap();
         let votes: Vec<Vote> = dsl::votes
@@ -241,6 +241,7 @@ fn format_radix(mut x: u32, radix: u32) -> String {
 }
 
 pub enum SortType {
+    Hot,
     Top,
     New,
     Disputed,

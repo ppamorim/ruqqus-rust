@@ -54,14 +54,14 @@ impl ApiKeys {
 }
 
 impl DataInner {
-    // pub fn is_indexing(&self, reader: &heed::RoTxn<UpdateT>, index: &str) -> MResult<Option<bool>> {
+    // pub fn is_indexing(&self, reader: &heed::RoTxn<UpdateT>, index: &str) -> RResult<Option<bool>> {
     //     match self.db.open_index(&index) {
     //         Some(index) => index.current_update_id(&reader).map(|u| Some(u.is_some())),
     //         None => Ok(None),
     //     }
     // }
 
-    // pub fn last_update(&self, reader: &heed::RoTxn<MainT>) -> MResult<Option<DateTime<Utc>>> {
+    // pub fn last_update(&self, reader: &heed::RoTxn<MainT>) -> RResult<Option<DateTime<Utc>>> {
     //     match self
     //         .db
     //         .common_store()
@@ -72,14 +72,14 @@ impl DataInner {
     //     }
     // }
 
-    // pub fn set_last_update(&self, writer: &mut heed::RwTxn<MainT>) -> MResult<()> {
+    // pub fn set_last_update(&self, writer: &mut heed::RwTxn<MainT>) -> RResult<()> {
     //     self.db
     //         .common_store()
     //         .put::<_, Str, SerdeDatetime>(writer, LAST_UPDATE_KEY, &Utc::now())
     //         .map_err(Into::into)
     // }
 
-    // pub fn compute_stats(&self, writer: &mut heed::RwTxn<MainT>, index_uid: &str) -> MResult<()> {
+    // pub fn compute_stats(&self, writer: &mut heed::RwTxn<MainT>, index_uid: &str) -> RResult<()> {
     //     let index = match self.db.open_index(&index_uid) {
     //         Some(index) => index,
     //         None => {

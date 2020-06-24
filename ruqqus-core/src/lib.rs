@@ -9,5 +9,5 @@ pub mod schema;
 pub mod store;
 
 pub use self::database::Database;
-pub use self::error::{Error, MResult};
+pub use self::error::{Error, RResult};
 pub use self::store::{Comment};

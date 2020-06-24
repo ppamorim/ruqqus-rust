@@ -14,14 +14,14 @@ pub struct CommentResponse {
 }
 
 impl CommentResponse {
-    fn from(comment: ruqqus_core::Comment) -> CommentResponse {
+    fn from(comment: ruqqus_core::models::Comment) -> CommentResponse {
         CommentResponse {
             cid: comment.id
         }
     }
 }
 
-#[get("/api/v1/comment{cid}")]
+#[get("/api/v1/comment/{cid}")]
 pub async fn comment_info(
     data: web::Data<Data>, 
     req: web::HttpRequest,

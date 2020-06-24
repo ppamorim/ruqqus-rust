@@ -1,6 +1,6 @@
 use std::{error, fmt, io};
 
-pub type MResult<T> = Result<T, Error>;
+pub type RResult<T> = Result<T, Error>;
 
 #[derive(Debug)]
 pub enum Error {
