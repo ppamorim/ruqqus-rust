@@ -26,8 +26,10 @@ pub fn create_app(
         .app_data(web::Data::new(data.clone()))
         .app_data(web::JsonConfig::default().limit(1024 * 1024 * 10)) // Json Limit of 10Mb
         .service(routes::guild::guild_info)
+        .service(routes::guild::guilds_info)
         .service(routes::user::user_info)
         .service(routes::post::post_info)
+        .service(routes::post::posts_info)
         .service(routes::comment::comment_info)
 
 }

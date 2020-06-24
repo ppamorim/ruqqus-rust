@@ -5,7 +5,40 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::ResponseError;
 use crate::routes::GuildParam;
+use crate::routes::SearchQuery;
 use crate::Data;
+
+#[get("/api/v1/guild/{board_name}")]
+pub async fn guild_info(
+    data: web::Data<Data>, 
+    req: web::HttpRequest,
+    path: web::Path<GuildParam>,
+) -> aweb::Result<HttpResponse> {
+
+    let guild = web::block({
+        move || data.db.get_guild(&path.board_name)
+    })
+    .await
+    .map_err(|err| ResponseError::Internal(err.to_string()))?;
+
+    Ok(HttpResponse::Ok().json(GuildResponse::from(guild)))
+}
+
+#[get("/api/v1/guilds")]
+pub async fn guilds_info(
+    data: web::Data<Data>,
+    params: web::Query<SearchQuery>,
+) -> aweb::Result<HttpResponse> {
+
+    let guilds = web::block({
+        move || data.db.get_guilds(0, params.offset, params.limit)
+    })
+    .await
+    .map_err(|err| ResponseError::Internal(err.to_string()))?;
+
+    Ok(HttpResponse::Ok().json(GuildResponse::from_vec(guilds)))
+}
+
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -33,6 +66,7 @@ pub struct GuildResponse {
 }
 
 impl GuildResponse {
+
     fn from(user: ruqqus_core::models::Board) -> GuildResponse {
         GuildResponse {
             id: user.id,
@@ -57,20 +91,11 @@ impl GuildResponse {
             is_nsfl: user.is_nsfl,
         }
     }
-}
 
-#[get("/api/v1/guild/{board_name}")]
-pub async fn guild_info(
-    data: web::Data<Data>, 
-    req: web::HttpRequest,
-    path: web::Path<GuildParam>,
-) -> aweb::Result<HttpResponse> {
+    fn from_vec(boards: Vec<ruqqus_core::models::Board>) -> Vec<GuildResponse> {
+        boards.into_iter().map(|row| {
+            Self::from(row)
+        }).collect()
+    }
 
-    let guild = web::block({
-        move || data.db.get_guild(&path.board_name)
-    })
-    .await
-    .map_err(|err| ResponseError::Internal(err.to_string()))?;
-
-    Ok(HttpResponse::Ok().json(GuildResponse::from(guild)))
 }

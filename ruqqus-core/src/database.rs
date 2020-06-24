@@ -81,10 +81,10 @@ impl Database {
 
         let submission_id = base36decode(pid);
 
-        let mut conn = self.pool.get().unwrap();
+        let conn = self.pool.get().unwrap();
 
         let submissions_vote = votes_dsl::votes
-            .filter(votes_dsl::user_id.eq(submission_id))
+            // .filter(votes_dsl::user_id.eq(submission_id))
             .filter(votes_dsl::submission_id.eq(submission_id));
 
         use diesel::debug_query;
@@ -121,6 +121,27 @@ impl Database {
         // if not x:
         //     abort(404)
         // return x
+    }
+
+    pub fn get_posts(&self, user_id: i32, offset: i64, limit: i64) -> RResult<Vec<Submission>> {
+
+        use crate::schema::submissions::dsl as submissions_dsl;
+        // use crate::schema::votes::dsl as votes_dsl;
+
+        let conn = self.pool.get().unwrap();
+
+        // let submissions_vote = votes_dsl::votes
+        //     .filter(votes_dsl::user_id.eq(user_id));
+
+        let submissions: Vec<Submission> = submissions_dsl::submissions
+            // .select([submissions_dsl::table, votes_dsl::vote_type])
+            .offset(offset)
+            .limit(limit)
+            // .left_outer_join(submissions_vote)
+            .load::<Submission>(&conn)
+            .expect("Error loading submission");
+
+        Ok(submissions)
     }
 
     pub fn get_board(&self, bid: i32) -> RResult<Board> {
@@ -162,6 +183,21 @@ impl Database {
             Some(board) => Ok(board),
             None => Err(Error::NotFound)
         }
+    }
+
+    pub fn get_guilds(&self, user_id: i32, offset: i64, limit: i64) -> RResult<Vec<Board>> {
+
+        use crate::schema::boards::dsl;
+
+        let conn = self.pool.get().unwrap();
+
+        let boards: Vec<Board> = dsl::boards
+            .offset(offset)
+            .limit(limit)
+            .load::<Board>(&conn)
+            .expect("Error loading users");
+
+        Ok(boards)
     }
 
     pub fn get_comment(&self, cid: i32) -> RResult<Comment> {

@@ -27,3 +27,10 @@ pub struct PostParam {
 pub struct CommentParam {
     cid: i32,
 }
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct SearchQuery {
+    offset: i64,
+    limit: i64,
+}
