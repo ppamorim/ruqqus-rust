@@ -10,4 +10,3 @@ pub mod store;
 
 pub use self::database::Database;
 pub use self::error::{Error, RResult};
-pub use self::store::{Comment};
