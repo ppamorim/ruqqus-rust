@@ -8,9 +8,7 @@ edition = "2018"
 [dependencies]
 chrono = { version = "0.4.11", features = ["serde"] }
 log = "0.4.8"
-
 r2d2 = "0.8"
-# r2d2_postgres = "0.16.0"
 postgres = { version = "0.17.2", features = ["with-chrono-0_4", "with-uuid-0_8"] }
 uuid = { version = "0.8.1", features = ["v4"] }
 diesel = { version = "1.4.4", features = ["postgres", "r2d2", "64-column-tables"] }

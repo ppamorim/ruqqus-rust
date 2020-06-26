@@ -21,7 +21,17 @@ docker build -t ruqqus .
 To start the server: 
 
 ```
-docker run -v -it --rm -p 7700:7700 ruqqus
+docker run -v -it --rm -p 5432:5432 ruqqus
+```
+
+Dev:
+
+```
+docker build -t ruqqus .
+```
+
+```
+docker run -v -it --rm -p 5432:5432 ruqqus
 ```
 
 ## License
